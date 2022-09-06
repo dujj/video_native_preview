@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.video_native_preview
+        package: com.seewo.flutter.video_native_preview
         pluginClass: VideoNativePreviewPlugin
       ios:
         pluginClass: VideoNativePreviewPlugin

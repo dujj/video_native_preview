@@ -1,4 +1,4 @@
-package com.example.video_native_preview;
+package com.seewo.flutter.video_native_preview;
 
 import androidx.annotation.NonNull;
 

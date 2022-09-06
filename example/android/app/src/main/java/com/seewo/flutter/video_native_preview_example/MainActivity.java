@@ -1,4 +1,4 @@
-package com.example.video_native_preview_example;
+package com.seewo.flutter.video_native_preview_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 
