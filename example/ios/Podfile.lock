@@ -1,0 +1,30 @@
+PODS:
+  - Flutter (1.0.0)
+  - IJKMediaPlayer (2.0.4)
+  - video_native_preview (0.0.1):
+    - Flutter
+    - IJKMediaPlayer
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - IJKMediaPlayer
+  - video_native_preview (from `.symlinks/plugins/video_native_preview/ios`)
+
+SPEC REPOS:
+  "git@gitlab.gz.cvte.cn:cocoacbb/private_specs.git":
+    - IJKMediaPlayer
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  video_native_preview:
+    :path: ".symlinks/plugins/video_native_preview/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  IJKMediaPlayer: 0a9025b35b35881e5d0881c884178ad7d075ca9b
+  video_native_preview: a6280df0d7a5ab4aef8a7e49d27d919e3a8aaac3
+
+PODFILE CHECKSUM: 9ba5b1febafd7e969838c245cdbfe76266d05b05
+
+COCOAPODS: 1.11.3
