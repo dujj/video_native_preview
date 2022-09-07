@@ -26,7 +26,12 @@ public class VideoNativePreviewFactory: NSObject, FlutterPlatformViewFactory {
     
 }
 
-public class VideoNativePreviewController: NSObject, FlutterPlatformView {
+public protocol VideoNativePreviewDelegate: NSObjectProtocol {
+    func rotate(_ orientation: String)
+    func changeAppBar(_ show: String)
+}
+
+public class VideoNativePreviewController: NSObject, FlutterPlatformView, VideoNativePreviewDelegate {
     
     var viewId: Int64
     
@@ -39,9 +44,16 @@ public class VideoNativePreviewController: NSObject, FlutterPlatformView {
         self.viewId = viewId
         let channelName = "plugins.flutter.io/video_native_preview_\(viewId)"
         self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: messenger)
-        self.preview = VideoNativePreview(frame: frame)
+        
+        var url: String = ""
+        if let dic = args as? [String: Any] {
+            url = dic["initialUrl"] as? String ?? ""
+        }
+        self.preview = VideoNativePreview(frame: frame, url: url)
         
         super.init()
+        
+        self.preview.delegate = self
         
         self.channel.setMethodCallHandler { [weak self] call, result in
             self?.handle(call, result: result)
@@ -54,11 +66,22 @@ public class VideoNativePreviewController: NSObject, FlutterPlatformView {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case "test":
+        case "viewWillAppear":
+            self.preview.viewWillAppear()
+            result(nil)
+        case "viewDidDisappear":
+            self.preview.viewDidDisappear()
             result(nil)
         default:
             result(FlutterMethodNotImplemented)
         }
     }
-
+    
+    public func rotate(_ orientation: String) {
+        self.channel.invokeMethod("rotateDeviceOrientation", arguments: ["orientation": orientation])
+    }
+    
+    public func changeAppBar(_ show: String) {
+        self.channel.invokeMethod("changeAppBar", arguments: ["status": show])
+    }
 }

@@ -16,6 +16,8 @@ A new Flutter plugin project.
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.dependency 'IJKMediaPlayer'
+  s.dependency 'QMUIKit'
+  s.dependency 'Alamofire'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.

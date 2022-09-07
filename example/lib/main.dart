@@ -24,7 +24,8 @@ class _MyAppState extends State<MyApp> {
         body: Container(
           constraints: const BoxConstraints.expand(),
           child: const VideoNativePreview(
-            initialUrl: 'jjiji',
+            initialUrl:
+                'https://user-images.githubusercontent.com/9443889/188844287-12bb7c20-0559-4247-8205-aaad31058a4a.mp4',
           ),
         ),
       ),
