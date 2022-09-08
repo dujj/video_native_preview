@@ -5,10 +5,14 @@ class CreationParams {
   /// The `autoMediaPlaybackPolicy` parameter must not be null.
   CreationParams({
     required this.initialUrl,
+    required this.failedText,
+    required this.retryText,
   });
 
   /// The initialUrl to load in the video preview.
   final String initialUrl;
+  final String failedText;
+  final String retryText;
 
   @override
   String toString() {
@@ -16,6 +20,10 @@ class CreationParams {
   }
 
   Map<String, dynamic> toJson() {
-    return {'initialUrl': initialUrl};
+    return {
+      'initialUrl': initialUrl,
+      'failedText': failedText,
+      'retryText': retryText
+    };
   }
 }

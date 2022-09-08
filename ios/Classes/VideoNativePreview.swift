@@ -339,8 +339,8 @@ class PKLiveVideoRetryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var imageView = UIImageView(image: UIImage(named: "empty_server_error_black"))
-    private lazy var retryLabel = UILabel()
+    private(set) lazy var imageView = UIImageView(image: UIImage(named: "empty_server_error_black"))
+    private(set) lazy var retryLabel = UILabel()
     private(set) lazy var retryButton = QMUIButton(type: .custom)
     
     func commonInit() {
@@ -352,7 +352,6 @@ class PKLiveVideoRetryView: UIView {
         self.retryLabel.textAlignment = .center
         self.retryLabel.textColor = .white
         self.retryLabel.font = UIFont.systemFont(ofSize: 16)
-        self.retryLabel.text = "failed_to_load"//i18n("failed_to_load")
         self.addSubview(self.retryLabel)
         
         
@@ -360,7 +359,6 @@ class PKLiveVideoRetryView: UIView {
         self.retryButton.setTitleColor(UIColor.white, for: .normal)
         self.retryButton.cornerRadius = 6
         self.retryButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        self.retryButton.setTitle("desktop_retry", for: .normal)
         self.addSubview(self.retryButton)
     }
     
@@ -439,7 +437,7 @@ class PKLiveVideoControlView: UIView {
     
     private lazy var pauseView = PKLiveVideoPauseView()
     
-    private lazy var retryView = PKLiveVideoRetryView()
+    private(set) lazy var retryView = PKLiveVideoRetryView()
     
     private lazy var headerImageView = UIImageView(image: UIImage(named: "im_header_cover_mask"))
     private lazy var headerTimeLabel: UILabel = UILabel()
@@ -652,6 +650,9 @@ class PKLiveVideoControlView: UIView {
 
 public class VideoNativePreview: UIView {
     var initialUrl: String
+    var failedText: String = "failed"
+    var retryText: String = "retry"
+    
     private var player: IJKMediaPlayback?
     
     public weak var delegate: VideoNativePreviewDelegate?
@@ -672,8 +673,10 @@ public class VideoNativePreview: UIView {
     }
     
     
-    public init(frame: CGRect, url: String) {
+    public init(frame: CGRect, url: String, failedText: String, retryText: String) {
         self.initialUrl = url
+        self.failedText = failedText
+        self.retryText = retryText
         super.init(frame: frame)
         self.backgroundColor = UIColor(red: 25.0/255.0, green: 30.0/255.0, blue: 34.0/255.0, alpha: 1.0)
         
@@ -687,6 +690,8 @@ public class VideoNativePreview: UIView {
 
         self.setupPlayer()
         
+        self.controlView.retryView.retryLabel.text = self.failedText // failed_to_load
+        self.controlView.retryView.retryButton.setTitle(self.retryText, for: .normal) //"desktop_retry"
         self.addSubview(self.controlView)
         
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognized(_:))))

@@ -9,5 +9,7 @@ abstract class VideoNativePreviewPlatformController {
   VideoNativePreviewPlatformController(
       VideoNativePreviewPlatformCallbacksHandler handler);
 
-  void test();
+  void viewWillAppear();
+
+  void viewDidDisappear();
 }

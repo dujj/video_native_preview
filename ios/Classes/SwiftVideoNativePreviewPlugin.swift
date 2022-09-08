@@ -46,10 +46,14 @@ public class VideoNativePreviewController: NSObject, FlutterPlatformView, VideoN
         self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: messenger)
         
         var url: String = ""
+        var failedText: String = "failed"
+        var retryText: String = "retry"
         if let dic = args as? [String: Any] {
             url = dic["initialUrl"] as? String ?? ""
+            failedText = dic["failedText"] as? String ?? "failedText"
+            retryText = dic["retryText"] as? String ?? "retryText"
         }
-        self.preview = VideoNativePreview(frame: frame, url: url)
+        self.preview = VideoNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
         
         super.init()
         

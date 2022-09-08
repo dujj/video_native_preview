@@ -11,12 +11,18 @@ import 'video_native_preview_platform_interface/video_native_preview_platform_in
 typedef VideoNativePreviewCreatedCallback = void Function(
     VideoNativePreviewController controller);
 
+typedef VideoNativePreviewStringCallback = void Function(String);
+
 class VideoNativePreview extends StatefulWidget {
   const VideoNativePreview({
     Key? key,
     this.onVideoNativePreviewCreated,
     required this.initialUrl,
     this.gestureRecognizers,
+    this.onRotate,
+    this.onChangeAppBar,
+    this.failedText = 'failed',
+    this.retryText = 'retry',
   }) : super(key: key);
 
   static VideoNativePreviewPlatform? _platform;
@@ -58,6 +64,12 @@ class VideoNativePreview extends StatefulWidget {
 
   /// The initial URL to load.
   final String initialUrl;
+
+  final VideoNativePreviewStringCallback? onRotate;
+  final VideoNativePreviewStringCallback? onChangeAppBar;
+
+  final String failedText;
+  final String retryText;
 
   @override
   State<StatefulWidget> createState() => _VideoNativePreviewState();
@@ -112,6 +124,8 @@ class _VideoNativePreviewState extends State<VideoNativePreview> {
 CreationParams _creationParamsfromWidget(VideoNativePreview widget) {
   return CreationParams(
     initialUrl: widget.initialUrl,
+    failedText: widget.failedText,
+    retryText: widget.retryText,
   );
 }
 
@@ -121,9 +135,20 @@ class _PlatformCallbacksHandler
 
   VideoNativePreview _widget;
 
+  /// orientation : 'portrait' or 'landscape'
   @override
-  void onTest() {
-    // TODO: implement onTest
+  void onRotate(String orientation) {
+    if (_widget.onRotate != null) {
+      _widget.onRotate!(orientation);
+    }
+  }
+
+  /// status : 'false' or 'true'
+  @override
+  void onChangeAppBar(String status) {
+    if (_widget.onChangeAppBar != null) {
+      _widget.onChangeAppBar!(status);
+    }
   }
 }
 
@@ -142,7 +167,11 @@ class VideoNativePreviewController {
     _widget = widget;
   }
 
-  void test() {
-    _videoNativePreviewPlatformController.test();
+  void viewWillAppear() {
+    _videoNativePreviewPlatformController.viewWillAppear();
+  }
+
+  void viewDidDisappear() {
+    _videoNativePreviewPlatformController.viewDidDisappear();
   }
 }

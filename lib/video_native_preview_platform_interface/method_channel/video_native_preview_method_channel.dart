@@ -18,10 +18,21 @@ class MethodChannelVideoNativePreviewPlatform
 
   final MethodChannel _channel;
 
-  Future<bool?> _onMethodCall(MethodCall call) async {
+  Future<dynamic> _onMethodCall(MethodCall call) async {
     switch (call.method) {
-      case 'onTest':
-        _platformCallbacksHandler.onTest();
+      case 'rotateDeviceOrientation':
+        if (call.arguments is Map) {
+          Map dict = call.arguments;
+          String orientation = dict['orientation'] as String? ?? 'portrait';
+          _platformCallbacksHandler.onRotate(orientation);
+        }
+        return null;
+      case 'changeAppBar':
+        if (call.arguments is Map) {
+          Map dict = call.arguments;
+          String status = dict['status'] as String? ?? 'false';
+          _platformCallbacksHandler.onChangeAppBar(status);
+        }
         return null;
     }
 
@@ -31,7 +42,12 @@ class MethodChannelVideoNativePreviewPlatform
   }
 
   @override
-  void test() {
-    _channel.invokeMethod('test');
+  void viewWillAppear() {
+    _channel.invokeMapMethod('viewWillAppear');
+  }
+
+  @override
+  void viewDidDisappear() {
+    _channel.invokeMapMethod('viewDidDisappear');
   }
 }
