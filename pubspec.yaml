@@ -1,7 +1,7 @@
 name: video_native_preview
-description: A new Flutter plugin project.
+description: video preview with ijkplayer.
 version: 0.0.1
-homepage:
+homepage: https://github.com/dujj/video_native_preview
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
