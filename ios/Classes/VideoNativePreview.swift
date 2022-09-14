@@ -648,14 +648,12 @@ class PKLiveVideoControlView: UIView {
 }
 
 
-public class VideoNativePreview: UIView {
+public class VideoNativePreview: NativePreview {
     var initialUrl: String
     var failedText: String = "failed"
     var retryText: String = "retry"
     
     private var player: IJKMediaPlayback?
-    
-    public weak var delegate: VideoNativePreviewDelegate?
     
     private lazy var controlView: PKLiveVideoControlView = {
         PKLiveVideoControlView { [weak weakSelf = self] (event) in
@@ -746,12 +744,12 @@ public class VideoNativePreview: UIView {
         }
     }
     
-    func viewWillAppear() {
+    public override func viewWillAppear() {
         self.addObervers()
         self.playIfNeed()
     }
     
-    func viewDidDisappear() {
+    public override func viewDidDisappear() {
         self.removeObervers()
         
         if case .playing = self.status {
@@ -878,7 +876,7 @@ public class VideoNativePreview: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.networkStatusDidChanged(_:)), name: .PKNetworkingReachabilityDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.networkStatusDidChanged(_:)), name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
     }
 
     private func removeObervers() {
@@ -888,7 +886,7 @@ public class VideoNativePreview: UIView {
         NotificationCenter.default.removeObserver(self, name: .IJKMPMoviePlayerLoadStateDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: .PKNetworkingReachabilityDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
     }
 
     @objc private func playerLoadStateDidChange(_ notification: Notification) {
@@ -991,14 +989,14 @@ public class VideoNativePreview: UIView {
         self.playIfNeed()
     }
     
-//    @objc private func networkStatusDidChanged(_ notification: Notification) {
-//        if !NetworkReachabilityManager.isReachable {
-//            self.isPlayingBeforePause = false
-//            if case .playing = self.status {
-//                self.pause()
-//            }
-//        }
-//    }
+    @objc private func networkStatusDidChanged(_ notification: Notification) {
+        if !(NetworkReachabilityManager.default?.isReachable ?? false) {
+            self.isPlayingBeforePause = false
+            if case .playing = self.status {
+                self.pause()
+            }
+        }
+    }
 
     private func playIfNeed() {
         if self.isPlayingBeforePause {

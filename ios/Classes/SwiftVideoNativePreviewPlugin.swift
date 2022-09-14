@@ -31,13 +31,24 @@ public protocol VideoNativePreviewDelegate: NSObjectProtocol {
     func changeAppBar(_ show: String)
 }
 
+public class NativePreview: UIView {
+    public weak var delegate: VideoNativePreviewDelegate?
+    
+    public func viewWillAppear() {
+    }
+    
+    public func viewDidDisappear() {
+        
+    }
+}
+
 public class VideoNativePreviewController: NSObject, FlutterPlatformView, VideoNativePreviewDelegate {
     
     var viewId: Int64
     
     var channel: FlutterMethodChannel
     
-    var preview: VideoNativePreview
+    var preview: NativePreview
     
     public init(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?, messenger: FlutterBinaryMessenger) {
         
@@ -48,12 +59,18 @@ public class VideoNativePreviewController: NSObject, FlutterPlatformView, VideoN
         var url: String = ""
         var failedText: String = "failed"
         var retryText: String = "retry"
+        var type: String = "video"
         if let dic = args as? [String: Any] {
             url = dic["initialUrl"] as? String ?? ""
             failedText = dic["failedText"] as? String ?? "failedText"
             retryText = dic["retryText"] as? String ?? "retryText"
+            type = dic["type"] as? String ?? "video"
         }
-        self.preview = VideoNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
+        if type == "video" {
+            self.preview = VideoNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
+        } else {
+            self.preview = AudioNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
+        }
         
         super.init()
         
