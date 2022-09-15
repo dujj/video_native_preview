@@ -37,6 +37,7 @@ class SurfaceAndroidVideoNativePreview extends AndroidVideoNativePreview {
           viewType: 'plugins.flutter.io/video_native_preview',
           layoutDirection: TextDirection.rtl,
           creationParamsCodec: const StandardMessageCodec(),
+          creationParams: creationParams.toJson(),
         )
           ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
           ..addOnPlatformViewCreatedListener((int id) {
