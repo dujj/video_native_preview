@@ -1,7 +1,6 @@
 package com.seewo.flutter.video_native_preview
 
 import android.content.Context
-import android.net.Uri
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
@@ -148,13 +147,9 @@ class PlayerView @JvmOverloads constructor(
 
     private fun initVideoView() {
         mVideoView = findViewById(R.id.player_view)
-        if (mFileUrl == null) {
-            Log.d(TAG, "initVideoView failed mFileUrl is null")
-            return
-        }
         showLoadingView()
-        Log.d(TAG, "initVideoView: " + Uri.parse(mFileUrl))
-        mVideoView?.setVideoURI(Uri.parse(mFileUrl))
+        Log.d(TAG, "initVideoView: $mFileUrl")
+        mVideoView?.setVideoPath(mFileUrl)
         mVideoView?.requestFocus()
         mVideoView?.setOnPreparedListener {
             mVideoView?.start()

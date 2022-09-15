@@ -66,7 +66,7 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
     }
 
     override fun onTopBarVisibility(visible: Boolean) {
-        var status = if (visible) "true" else "false"
+        var status = if (visible) "false" else "true"
         Log.d("MediaPlayerView", "onChangeAppBar :$status")
         mMethodChannel?.invokeMethod("onChangeAppBar", status)
     }

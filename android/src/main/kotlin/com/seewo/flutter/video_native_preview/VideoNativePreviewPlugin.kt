@@ -1,39 +1,24 @@
 package com.seewo.flutter.video_native_preview
 
 import androidx.annotation.NonNull
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 
 /** VideoNativePreviewPlugin */
-class VideoNativePreviewPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
+class VideoNativePreviewPlugin : FlutterPlugin {
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
 
-  override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(binding.binaryMessenger, "video_native_preview")
-    channel.setMethodCallHandler(this)
-    binding
-      .platformViewRegistry
-      .registerViewFactory(
-        "plugins.flutter.io/video_native_preview",MediaPlayerFactory(binding.binaryMessenger))
-  }
-
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+    override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        binding
+            .platformViewRegistry
+            .registerViewFactory(
+                "plugins.flutter.io/video_native_preview",
+                MediaPlayerFactory(binding.binaryMessenger)
+            )
     }
-  }
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    }
 }
