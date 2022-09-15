@@ -23,6 +23,7 @@ class VideoNativePreview extends StatefulWidget {
     this.onChangeAppBar,
     this.failedText = 'failed',
     this.retryText = 'retry',
+    this.type = 'video',
   }) : super(key: key);
 
   static VideoNativePreviewPlatform? _platform;
@@ -70,6 +71,9 @@ class VideoNativePreview extends StatefulWidget {
 
   final String failedText;
   final String retryText;
+
+  /// type 'video' or 'audio'
+  final String type;
 
   @override
   State<StatefulWidget> createState() => _VideoNativePreviewState();
@@ -126,6 +130,7 @@ CreationParams _creationParamsfromWidget(VideoNativePreview widget) {
     initialUrl: widget.initialUrl,
     failedText: widget.failedText,
     retryText: widget.retryText,
+    type: widget.type,
   );
 }
 

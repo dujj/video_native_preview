@@ -7,12 +7,14 @@ class CreationParams {
     required this.initialUrl,
     required this.failedText,
     required this.retryText,
+    required this.type,
   });
 
   /// The initialUrl to load in the video preview.
   final String initialUrl;
   final String failedText;
   final String retryText;
+  final String type;
 
   @override
   String toString() {
@@ -23,7 +25,8 @@ class CreationParams {
     return {
       'initialUrl': initialUrl,
       'failedText': failedText,
-      'retryText': retryText
+      'retryText': retryText,
+      'type': type,
     };
   }
 }
