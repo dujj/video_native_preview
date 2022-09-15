@@ -16,6 +16,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer
 import java.lang.ref.WeakReference
 import java.util.*
 
+
 /**
  * Created by ctj on 2022/9/15.
  */
@@ -331,8 +332,7 @@ class PlayerView @JvmOverloads constructor(
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if (msg.what == MESSAGE_UPDATE_PROGRESS) {
-                val view: PlayerView? =
-                    mViewReference.get()
+                val view: PlayerView? = mViewReference.get()
                 view?.updateProgress()
             }
         }

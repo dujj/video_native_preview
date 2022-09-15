@@ -51,7 +51,6 @@ class AnimationLoadingView : AppCompatImageView {
         parent?.removeView(this)
     }
 
-
     //把px转换成dp
     private fun dipToPixel(context: Context, dip: Int): Int {
         return TypedValue.applyDimension(

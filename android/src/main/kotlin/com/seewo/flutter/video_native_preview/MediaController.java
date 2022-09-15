@@ -1,5 +1,7 @@
 package com.seewo.flutter.video_native_preview;
 
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -81,6 +83,15 @@ public class MediaController {
         mFullScreenImageView = mFootBar.findViewById(R.id.full_screen_imageView);
         if (mFullScreenImageView != null) {
             mFullScreenImageView.setOnClickListener(mClickListener);
+            mFullScreenImageView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                int orientation = context.getResources().getConfiguration().orientation;
+                Log.d(TAG, "onLayoutChange orientation" + orientation);
+                if (orientation == ORIENTATION_PORTRAIT) {
+                    updateFullScreenState(false);
+                } else {
+                    updateFullScreenState(true);
+                }
+            });
         }
     }
 
@@ -260,7 +271,7 @@ public class MediaController {
         resetDelayHideFootBar();
     }
 
-    public void updateFullScreenState(boolean isFullScreen) {
+    private void updateFullScreenState(boolean isFullScreen) {
         if (mFullScreenImageView == null) {
             return;
         }
