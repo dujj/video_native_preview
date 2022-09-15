@@ -5,19 +5,22 @@ buildscript {
     ext.kotlin_version = '1.6.10'
     repositories {
         google()
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
+        maven {
+            url 'https://artifactory.gz.cvte.cn/artifactory/SR_maven_releases_local/'
+        }
         google()
-        mavenCentral()
+        jcenter()
     }
 }
 
@@ -38,9 +41,29 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.resources.srcDirs += 'src/main/res'
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
+    dependencies {
+        implementation 'com.seewo.lib.pinco:ijkplayer-java:1.0.6'
+        implementation 'com.seewo.lib.pinco:ijkplayer:1.0.6'
+        implementation 'androidx.appcompat:appcompat:1.4.2'
+        implementation 'androidx.appcompat:appcompat-resources:1.4.2'
+    }
+
 }
+
+
+

@@ -16,9 +16,13 @@ class VideoNativePreviewPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "video_native_preview")
+  override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel = MethodChannel(binding.binaryMessenger, "video_native_preview")
     channel.setMethodCallHandler(this)
+    binding
+      .platformViewRegistry
+      .registerViewFactory(
+        "plugins.flutter.io/video_native_preview",MediaPlayerFactory(binding.binaryMessenger))
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
