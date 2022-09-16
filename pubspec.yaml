@@ -1,6 +1,6 @@
 name: video_native_preview
 description: video preview with ijkplayer.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/dujj/video_native_preview
 
 environment:
