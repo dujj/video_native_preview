@@ -15,6 +15,7 @@
             android:id="@+id/current_time_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/size_16"
             android:textColor="@color/white_alpha_80"
             android:textSize="@dimen/size_12" />
 
@@ -29,13 +30,15 @@
             android:paddingTop="@dimen/video_seek_bar_padding_top"
             android:paddingBottom="@dimen/video_seek_bar_padding_top"
             android:progressDrawable="@drawable/bg_video_seek_bar"
-            android:thumb="@drawable/bg_white_circle" />
+            android:thumb="@drawable/bg_white_circle"
+            android:thumbOffset="0dp" />
 
         <TextView
             android:id="@+id/end_time_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/size_16"
+            android:paddingStart="@dimen/size_16"
+            android:paddingEnd="@dimen/size_16"
             android:textColor="@color/white_alpha_80"
             android:textSize="@dimen/size_12" />
     </LinearLayout>
