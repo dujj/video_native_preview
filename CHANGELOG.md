@@ -12,3 +12,8 @@
 ## 0.0.3
 
 * android fix
+
+
+## 0.0.4
+
+* android fix

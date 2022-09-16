@@ -662,7 +662,7 @@ public class VideoNativePreview: NativePreview {
     }()
     
     deinit {
-        self.viewDidDisappear()
+        self.removeObervers()
         self.resume()
         self.timer.cancel()
         self.player?.view.removeFromSuperview()
@@ -694,10 +694,11 @@ public class VideoNativePreview: NativePreview {
         
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognized(_:))))
         
+        self.addObervers()
+
         self.status = .playing(true)
         self.player?.prepareToPlay()
         
-        self.viewWillAppear()
     }
     
     required init?(coder: NSCoder) {
@@ -758,7 +759,6 @@ public class VideoNativePreview: NativePreview {
         } else {
             self.isPlayingBeforePause = false
         }
-        
     }
     
     private func handlerEvent(_ event: PKLiveVideoControlView.Event) {
