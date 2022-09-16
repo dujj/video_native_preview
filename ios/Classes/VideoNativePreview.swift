@@ -876,7 +876,7 @@ public class VideoNativePreview: NativePreview {
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.networkStatusDidChanged(_:)), name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
+        // NotificationCenter.default.addObserver(self, selector: #selector(self.networkStatusDidChanged(_:)), name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
     }
 
     private func removeObervers() {
@@ -886,7 +886,7 @@ public class VideoNativePreview: NativePreview {
         NotificationCenter.default.removeObserver(self, name: .IJKMPMoviePlayerLoadStateDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
+        // NotificationCenter.default.removeObserver(self, name: Notification.Name("com.alamofire.networking.reachability.change"), object: nil)
     }
 
     @objc private func playerLoadStateDidChange(_ notification: Notification) {
@@ -989,14 +989,14 @@ public class VideoNativePreview: NativePreview {
         self.playIfNeed()
     }
     
-    @objc private func networkStatusDidChanged(_ notification: Notification) {
-        if !(NetworkReachabilityManager.default?.isReachable ?? false) {
-            self.isPlayingBeforePause = false
-            if case .playing = self.status {
-                self.pause()
-            }
-        }
-    }
+    // @objc private func networkStatusDidChanged(_ notification: Notification) {
+    //     if !(NetworkReachabilityManager.default?.isReachable ?? false) {
+    //         self.isPlayingBeforePause = false
+    //         if case .playing = self.status {
+    //             self.pause()
+    //         }
+    //     }
+    // }
 
     private func playIfNeed() {
         if self.isPlayingBeforePause {
