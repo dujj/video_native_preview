@@ -12,6 +12,8 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 
 class AnimationLoadingView : AppCompatImageView {
+    private var isShowing = false
+
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)
     constructor(context: Context, resId: Int) : super(context) {
         setBackgroundResource(resId)
@@ -33,6 +35,7 @@ class AnimationLoadingView : AppCompatImageView {
         parent.addView(this)
         var animationDrawable = background as AnimationDrawable?
         animationDrawable?.start()
+        isShowing = true
     }
 
     fun show(parent: FrameLayout) {
@@ -44,6 +47,11 @@ class AnimationLoadingView : AppCompatImageView {
         var animationDrawable = background as AnimationDrawable?
         animationDrawable?.stop()
         removeFromParent()
+        isShowing = false
+    }
+
+    fun isShowing():Boolean{
+        return isShowing
     }
 
     private fun removeFromParent() {

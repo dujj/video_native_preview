@@ -142,7 +142,7 @@ class PlayerView @JvmOverloads constructor(
 
         if (mIsAudio) {
             mMediaController?.setHideBar(false)
-            mMediaController?.hideFullScreenBtn()
+            mMediaController?.hideRotateBtn()
         }
     }
 
@@ -205,13 +205,12 @@ class PlayerView @JvmOverloads constructor(
         }
     }
 
-
     private fun showLoadingView() {
         mErrorView?.visibility = GONE
         if (mAnimationLoadingView == null) {
             mAnimationLoadingView = AnimationLoadingView(context, R.drawable.anim_live_loading)
         }
-        if (mContainer != null) {
+        if (mContainer != null && mAnimationLoadingView?.isShowing() == false) {
             mAnimationLoadingView?.show(mContainer!!)
         }
     }

@@ -33,11 +33,11 @@ public class MediaController {
     private int mShowTimeOutMs;
     private boolean mIsTrackingTouch;
     private IMediaPlayerOption mIMediaPlayerOption;
-    private ImageView mFullScreenImageView;
+    private ImageView mRotationImageView;
     private boolean mIsPlaying = true;
     private StringBuilder mFormatBuilder;
     private Formatter mFormatter;
-    private boolean mIsFullScreen;
+    private boolean mIsLandscape;
     private boolean mIsHideBar = true;
     private View.OnClickListener mClickListener;
 
@@ -80,16 +80,16 @@ public class MediaController {
         mPlayImageView = mFootBar.findViewById(R.id.iv_play);
         mCurrentTime = mFootBar.findViewById(R.id.current_time_textView);
         mTotalTime = mFootBar.findViewById(R.id.end_time_textView);
-        mFullScreenImageView = mFootBar.findViewById(R.id.full_screen_imageView);
-        if (mFullScreenImageView != null) {
-            mFullScreenImageView.setOnClickListener(mClickListener);
-            mFullScreenImageView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+        mRotationImageView = mFootBar.findViewById(R.id.rotate_imageView);
+        if (mRotationImageView != null) {
+            mRotationImageView.setOnClickListener(mClickListener);
+            mRotationImageView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
                 int orientation = context.getResources().getConfiguration().orientation;
                 Log.d(TAG, "onLayoutChange orientation" + orientation);
                 if (orientation == ORIENTATION_PORTRAIT) {
-                    updateFullScreenState(false);
+                    updateRotationState(false);
                 } else {
-                    updateFullScreenState(true);
+                    updateRotationState(true);
                 }
             });
         }
@@ -99,9 +99,9 @@ public class MediaController {
         mIsHideBar = isHideBar;
     }
 
-    public void hideFullScreenBtn() {
-        if (mFullScreenImageView != null) {
-            mFullScreenImageView.setVisibility(View.GONE);
+    public void hideRotateBtn() {
+        if (mRotationImageView != null) {
+            mRotationImageView.setVisibility(View.GONE);
         }
     }
 
@@ -116,15 +116,15 @@ public class MediaController {
             int id = v.getId();
             if (id == R.id.iv_play) {
                 doPauseResume();
-            } else if (id == R.id.full_screen_imageView) {
-                onHandleFullScreen();
+            } else if (id == R.id.rotate_imageView) {
+                onHandleScreenOrientation();
             }
         };
     }
 
-    private void onHandleFullScreen() {
+    private void onHandleScreenOrientation() {
         if (mIMediaPlayerOption != null) {
-            mIMediaPlayerOption.onScreenOrientation(!mIsFullScreen);
+            mIMediaPlayerOption.onScreenOrientation(!mIsLandscape);
         }
     }
 
@@ -271,15 +271,15 @@ public class MediaController {
         resetDelayHideFootBar();
     }
 
-    private void updateFullScreenState(boolean isFullScreen) {
-        if (mFullScreenImageView == null) {
+    private void updateRotationState(boolean isLandscape) {
+        if (mRotationImageView == null) {
             return;
         }
-        mIsFullScreen = isFullScreen;
-        if (isFullScreen) {
-            mFullScreenImageView.setImageResource(R.drawable.ic_exit_full_screen);
+        mIsLandscape = isLandscape;
+        if (isLandscape) {
+            mRotationImageView.setImageResource(R.drawable.ic_exit_full_screen);
         } else {
-            mFullScreenImageView.setImageResource(R.drawable.ic_full_screen);
+            mRotationImageView.setImageResource(R.drawable.ic_full_screen);
         }
     }
 
@@ -326,8 +326,8 @@ public class MediaController {
     public void setEnable(boolean enable) {
         mPlayProgressSeekBar.setEnabled(enable);
         mPlayImageView.setEnabled(enable);
-        if (mFullScreenImageView != null) {
-            mFullScreenImageView.setEnabled(enable);
+        if (mRotationImageView != null) {
+            mRotationImageView.setEnabled(enable);
         }
     }
 
@@ -341,7 +341,6 @@ public class MediaController {
 
     private String stringForTime(int timeMs) {
         int totalSeconds = timeMs / 1000;
-
         int seconds = totalSeconds % 60;
         int minutes = (totalSeconds / 60) % 60;
         int hours = (totalSeconds / 3600) % 60;
