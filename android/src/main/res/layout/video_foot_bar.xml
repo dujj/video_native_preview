@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_play"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:padding="@dimen/size_16"
-        android:src="@drawable/ic_media_pause" />
+        android:src="@drawable/ic_media_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/current_time_textView"
@@ -18,21 +21,28 @@
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/size_16"
         android:textColor="@color/white_alpha_80"
-        android:textSize="@dimen/size_12" />
+        android:textSize="@dimen/size_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_play"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="00:01" />
 
     <SeekBar
         android:id="@+id/media_controller"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:background="@null"
         android:maxHeight="@dimen/video_seek_bar_height"
         android:minHeight="@dimen/video_seek_bar_height"
         android:paddingTop="@dimen/video_seek_bar_padding_top"
         android:paddingBottom="@dimen/video_seek_bar_padding_top"
         android:progressDrawable="@drawable/bg_video_seek_bar"
+        android:thumb="@drawable/bg_white_circle"
         android:thumbOffset="0dp"
-        android:thumb="@drawable/bg_white_circle" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/current_time_textView"
+        app:layout_constraintRight_toLeftOf="@id/end_time_textView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/end_time_textView"
@@ -41,7 +51,11 @@
         android:paddingStart="@dimen/size_16"
         android:paddingEnd="@dimen/size_16"
         android:textColor="@color/white_alpha_80"
-        android:textSize="@dimen/size_12" />
+        android:textSize="@dimen/size_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/media_controller"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10:11" />
 
     <ImageView
         android:id="@+id/rotate_imageView"
@@ -50,6 +64,10 @@
         android:paddingTop="@dimen/size_16"
         android:paddingEnd="@dimen/size_16"
         android:paddingBottom="@dimen/size_16"
-        android:src="@drawable/ic_full_screen" />
+        android:src="@drawable/ic_full_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/end_time_textView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
