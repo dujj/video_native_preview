@@ -95,6 +95,7 @@ class PlayerView @JvmOverloads constructor(
     }
 
     fun onPause() {
+        Log.d(TAG, "onPause")
         if (mVideoView != null) {
             mIsPlayBeforeBackground = mVideoView?.isPlaying ?: false
             if (mIsPlayBeforeBackground) {
@@ -104,6 +105,7 @@ class PlayerView @JvmOverloads constructor(
     }
 
     fun onResume() {
+        Log.d(TAG, "onResume")
         if (mIsPlayBeforeBackground) {
             showPlayState()
         }

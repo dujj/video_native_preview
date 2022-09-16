@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ public class MediaController {
     private static final int HIDE_FOOT_BAR = 2;
     private static final int BAR_DELAY_HIDE = 5 * 1000;
     private Context mContext;
-    private LinearLayout mFootBar;
+    private View mFootBar;
     private View mErrorView;
     private SeekBar mPlayProgressSeekBar;
     private ImageView mPlayImageView;
@@ -73,8 +72,8 @@ public class MediaController {
 
     private void initView(Context context, boolean isAudio) {
         initNoDoubleClickListener();
-        mFootBar = isAudio ? (LinearLayout) LayoutInflater.from(context).inflate(R.layout.audio_foot_bar, null) :
-                (LinearLayout) LayoutInflater.from(context).inflate(R.layout.video_foot_bar, null);
+        mFootBar = isAudio ? LayoutInflater.from(context).inflate(R.layout.audio_foot_bar, null) :
+                LayoutInflater.from(context).inflate(R.layout.video_foot_bar, null);
 
         mPlayProgressSeekBar = mFootBar.findViewById(R.id.media_controller);
         mPlayImageView = mFootBar.findViewById(R.id.iv_play);
@@ -82,16 +81,21 @@ public class MediaController {
         mTotalTime = mFootBar.findViewById(R.id.end_time_textView);
         mRotationImageView = mFootBar.findViewById(R.id.rotate_imageView);
         if (mRotationImageView != null) {
+            setRotation(context);
             mRotationImageView.setOnClickListener(mClickListener);
             mRotationImageView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-                int orientation = context.getResources().getConfiguration().orientation;
-                Log.d(TAG, "onLayoutChange orientation" + orientation);
-                if (orientation == ORIENTATION_PORTRAIT) {
-                    updateRotationState(false);
-                } else {
-                    updateRotationState(true);
-                }
+                setRotation(context);
             });
+        }
+    }
+
+    private void setRotation(Context context) {
+        int orientation = context.getResources().getConfiguration().orientation;
+        Log.d(TAG, "setRotation orientation" + orientation);
+        if (orientation == ORIENTATION_PORTRAIT) {
+            updateRotationState(false);
+        } else {
+            updateRotationState(true);
         }
     }
 

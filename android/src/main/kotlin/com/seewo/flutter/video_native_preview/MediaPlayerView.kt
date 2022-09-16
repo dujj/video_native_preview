@@ -11,6 +11,9 @@ import io.flutter.plugin.platform.PlatformView
  * Created by ctj on 2022/9/15.
  */
 class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOption {
+    companion object {
+        private const val TAG = "MediaPlayerView"
+    }
 
     private var mMethodChannel: MethodChannel? = null
     private var mPlayerView: PlayerView? = null
@@ -41,11 +44,13 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
     }
 
     override fun dispose() {
+        Log.d(TAG, "dispose")
         mMethodChannel?.setMethodCallHandler(null)
         mPlayerView?.onDestroy()
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        Log.d(TAG, "onMethodCall :${call.method}")
         when (call.method) {
             "viewWillAppear" -> {
                 mPlayerView?.onResume()
@@ -60,14 +65,18 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
     }
 
     override fun onScreenOrientation(landscape: Boolean) {
-        var orientation = if (landscape) "landscape" else "portrait"
-        Log.d("MediaPlayerView", "onRotate :$orientation")
-        mMethodChannel?.invokeMethod("onRotate", orientation)
+        val orientation = if (landscape) "landscape" else "portrait"
+        Log.d(TAG, "onRotate :$orientation")
+        val map = mutableMapOf<String, String>()
+        map["orientation"] = orientation
+        mMethodChannel?.invokeMethod("onRotate", map)
     }
 
     override fun onTopBarVisibility(visible: Boolean) {
         var status = if (visible) "false" else "true"
-        Log.d("MediaPlayerView", "onChangeAppBar :$status")
-        mMethodChannel?.invokeMethod("onChangeAppBar", status)
+        Log.d(TAG, "onChangeAppBar :$status")
+        val map = mutableMapOf<String, String>()
+        map["status"] = status
+        mMethodChannel?.invokeMethod("onChangeAppBar", map)
     }
 }
