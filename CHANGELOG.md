@@ -7,3 +7,8 @@
 
 * add ios audio
 * add android video and audio
+
+
+## 0.0.3
+
+* android fix
