@@ -55,14 +55,14 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
     }
+}
 
-    dependencies {
-        implementation 'com.seewo.lib.pinco:ijkplayer-java:1.0.6'
-        implementation 'com.seewo.lib.pinco:ijkplayer:1.0.6'
-        implementation 'androidx.appcompat:appcompat:1.4.2'
-        implementation 'androidx.appcompat:appcompat-resources:1.4.2'
-    }
-
+dependencies {
+    implementation 'com.seewo.lib.pinco:ijkplayer-java:1.0.6'
+    implementation 'com.seewo.lib.pinco:ijkplayer:1.0.6'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat-resources:1.4.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
 
 
