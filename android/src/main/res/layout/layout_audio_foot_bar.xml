@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/current_time_textView"
+            android:id="@+id/tv_current_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/size_16"
@@ -24,7 +24,7 @@
             tools:text="00:01" />
 
         <SeekBar
-            android:id="@+id/media_controller"
+            android:id="@+id/seekbar_media"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -32,16 +32,16 @@
             android:minHeight="@dimen/video_seek_bar_height"
             android:paddingTop="@dimen/video_seek_bar_padding_top"
             android:paddingBottom="@dimen/video_seek_bar_padding_top"
-            android:progressDrawable="@drawable/bg_video_seek_bar"
-            android:thumb="@drawable/bg_white_circle"
+            android:progressDrawable="@drawable/bg_media_seek_bar"
+            android:thumb="@drawable/bg_media_seek_bar_thumb"
             android:thumbOffset="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/current_time_textView"
-            app:layout_constraintRight_toLeftOf="@id/end_time_textView"
+            app:layout_constraintLeft_toRightOf="@id/tv_current_time"
+            app:layout_constraintRight_toLeftOf="@id/tv_end_time"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/end_time_textView"
+            android:id="@+id/tv_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/size_16"

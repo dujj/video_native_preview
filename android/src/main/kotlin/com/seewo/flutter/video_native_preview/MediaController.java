@@ -25,7 +25,7 @@ public class MediaController {
     private Context mContext;
     private View mFootBar;
     private View mErrorView;
-    private SeekBar mPlayProgressSeekBar;
+    private SeekBar mSeekBar;
     private ImageView mPlayImageView;
     private TextView mCurrentTime;
     private TextView mTotalTime;
@@ -72,14 +72,14 @@ public class MediaController {
 
     private void initView(Context context, boolean isAudio) {
         initNoDoubleClickListener();
-        mFootBar = isAudio ? LayoutInflater.from(context).inflate(R.layout.audio_foot_bar, null) :
-                LayoutInflater.from(context).inflate(R.layout.video_foot_bar, null);
-
-        mPlayProgressSeekBar = mFootBar.findViewById(R.id.media_controller);
+        mFootBar = isAudio ? LayoutInflater.from(context).inflate(R.layout.layout_audio_foot_bar, null) :
+                LayoutInflater.from(context).inflate(R.layout.layout_video_foot_bar, null);
+        mSeekBar = mFootBar.findViewById(R.id.seekbar_media);
+        mSeekBar.setRotation(180);//pinco 项目接入后莫名被旋转了180度，通过此恢复
         mPlayImageView = mFootBar.findViewById(R.id.iv_play);
-        mCurrentTime = mFootBar.findViewById(R.id.current_time_textView);
-        mTotalTime = mFootBar.findViewById(R.id.end_time_textView);
-        mRotationImageView = mFootBar.findViewById(R.id.rotate_imageView);
+        mCurrentTime = mFootBar.findViewById(R.id.tv_current_time);
+        mTotalTime = mFootBar.findViewById(R.id.tv_end_time);
+        mRotationImageView = mFootBar.findViewById(R.id.rotate_view);
         if (mRotationImageView != null) {
             setRotation(context);
             mRotationImageView.setOnClickListener(mClickListener);
@@ -111,16 +111,15 @@ public class MediaController {
 
     private void setListeners() {
         mFootBar.setOnTouchListener(new ResetDelayHideBarTouchListener());
-        mPlayProgressSeekBar.setOnSeekBarChangeListener(new ProgressChangeListener());
+        mSeekBar.setOnSeekBarChangeListener(new ProgressChangeListener());
         mPlayImageView.setOnClickListener(mClickListener);
     }
 
     private void initNoDoubleClickListener() {
         mClickListener = v -> {
-            int id = v.getId();
-            if (id == R.id.iv_play) {
+            if (v == mPlayImageView) {
                 doPauseResume();
-            } else if (id == R.id.rotate_imageView) {
+            } else if (v == mRotationImageView) {
                 onHandleScreenOrientation();
             }
         };
@@ -292,19 +291,19 @@ public class MediaController {
             Log.d(TAG, "updateProgress return");
             return;
         }
-        mPlayProgressSeekBar.setProgress(progress);
+        mSeekBar.setProgress(progress);
     }
 
     public int getTotalDuration() {
-        return mPlayProgressSeekBar.getMax();
+        return mSeekBar.getMax();
     }
 
     public int getCurrentDuration() {
-        return mPlayProgressSeekBar.getProgress();
+        return mSeekBar.getProgress();
     }
 
     public void updateSecondaryProgress(int secondaryProgress) {
-        mPlayProgressSeekBar.setSecondaryProgress(secondaryProgress);
+        mSeekBar.setSecondaryProgress(secondaryProgress);
     }
 
     public void updateCurrentTime(String currentTime) {
@@ -320,7 +319,7 @@ public class MediaController {
     }
 
     public void setProgressMax(int max) {
-        mPlayProgressSeekBar.setMax(max);
+        mSeekBar.setMax(max);
     }
 
     public void release() {
@@ -328,7 +327,7 @@ public class MediaController {
     }
 
     public void setEnable(boolean enable) {
-        mPlayProgressSeekBar.setEnabled(enable);
+        mSeekBar.setEnabled(enable);
         mPlayImageView.setEnabled(enable);
         if (mRotationImageView != null) {
             mRotationImageView.setEnabled(enable);
