@@ -697,6 +697,7 @@ public class VideoNativePreview: NativePreview {
         self.addObervers()
 
         self.status = .playing(true)
+        self.controlView.status = .playing(true)
         self.player?.prepareToPlay()
         
     }
