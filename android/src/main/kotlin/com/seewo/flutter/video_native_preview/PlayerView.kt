@@ -42,7 +42,7 @@ class PlayerView @JvmOverloads constructor(
 
     private var mVideoView: IjkVideoView? = null
     private var mContainer: FrameLayout? = null
-    private var mMediaController: MediaController? = null
+    private var mMediaController: MediaPlayerController? = null
     private var mFormatBuilder: StringBuilder? = null
     private var mFormatter: Formatter? = null
     private var mHandler: Handler? = null
@@ -58,8 +58,8 @@ class PlayerView @JvmOverloads constructor(
     private var mIsAudio = false
     private var mAnimationLoadingView: AnimationLoadingView? = null
     private var mUpdateProgressDelay: Long = 0
-    private var mRetryText: String? = null
-    private var mFailedText: String? = null
+    private var mRetryText: String
+    private var mFailedText: String
     var mViewOption: IViewOption? = null
 
     init {
@@ -112,7 +112,7 @@ class PlayerView @JvmOverloads constructor(
     }
 
     private fun initMediaController() {
-        mMediaController = MediaController(context, mIsAudio, mRetryText, mFailedText)
+        mMediaController = MediaPlayerController(context, mIsAudio, mRetryText, mFailedText)
         mMediaController?.setMediaPlayerControl(this)
         mErrorView = mMediaController?.errorView
         val errorViewLayoutParams = LayoutParams(
