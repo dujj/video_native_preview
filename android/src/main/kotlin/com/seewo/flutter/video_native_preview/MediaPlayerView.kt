@@ -28,6 +28,7 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
         failedText: String
     ) {
         this.mMethodChannel = methodChannel
+        mMethodChannel?.setMethodCallHandler(this)
         mPlayerView = PlayerView(
             context,
             url = url,
@@ -52,11 +53,16 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         Log.d(TAG, "onMethodCall :${call.method}")
         when (call.method) {
+            "getPlatformVersion" -> {
+                result.success("Android ${android.os.Build.VERSION.RELEASE}")
+            }
             "viewWillAppear" -> {
                 mPlayerView?.onResume()
+                result.success("")
             }
             "viewDidDisappear" -> {
                 mPlayerView?.onPause()
+                result.success("")
             }
             else -> {
                 result.notImplemented()
@@ -66,17 +72,17 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
 
     override fun onScreenOrientation(landscape: Boolean) {
         val orientation = if (landscape) "landscape" else "portrait"
-        Log.d(TAG, "onRotate :$orientation")
+        Log.d(TAG, "rotateDeviceOrientation :$orientation")
         val map = mutableMapOf<String, String>()
         map["orientation"] = orientation
-        mMethodChannel?.invokeMethod("onRotate", map)
+        mMethodChannel?.invokeMethod("rotateDeviceOrientation", map)
     }
 
     override fun onTopBarVisibility(visible: Boolean) {
         var status = if (visible) "false" else "true"
-        Log.d(TAG, "onChangeAppBar :$status")
+        Log.d(TAG, "changeAppBar :$status")
         val map = mutableMapOf<String, String>()
         map["status"] = status
-        mMethodChannel?.invokeMethod("onChangeAppBar", map)
+        mMethodChannel?.invokeMethod("changeAppBar", map)
     }
 }
