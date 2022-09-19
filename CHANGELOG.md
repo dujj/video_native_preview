@@ -22,3 +22,7 @@
 ## 0.0.5
 
 * android fix
+
+## 0.0.6
+
+* bug fix
