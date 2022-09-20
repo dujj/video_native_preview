@@ -30,3 +30,7 @@
 ## 0.0.7
 
 * android fix
+
+## 0.0.8
+
+* ios fix
