@@ -589,7 +589,13 @@ class PKLiveVideoControlView: UIView {
         }
         
         var duration: Double = player?.duration ?? 0
+        if duration.isNaN {
+            duration = 0
+        }
         var playableDuration: Double = player?.playableDuration ?? 0
+        if playableDuration.isNaN {
+            playableDuration = 0
+        }
         
         if playableDuration > 0, duration <= 0 {
             duration = playableDuration
