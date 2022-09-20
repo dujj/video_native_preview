@@ -663,8 +663,12 @@ public class VideoNativePreview: NativePreview {
     
     deinit {
         self.removeObervers()
-        self.resume()
-        self.timer.cancel()
+        if !self.isTimerSuspend {
+            self.timer?.cancel()
+        } else {
+            self.timer?.resume()
+            self.timer?.cancel()
+        }
         self.player?.view.removeFromSuperview()
         self.player?.shutdown()
         self.player = nil
@@ -696,9 +700,14 @@ public class VideoNativePreview: NativePreview {
         
         self.addObervers()
 
-        self.status = .playing(true)
-        self.controlView.status = .playing(true)
-        self.player?.prepareToPlay()
+        if self.player != nil {
+            self.status = .playing(true)
+            self.controlView.status = .playing(true)
+            self.player?.prepareToPlay()
+        } else {
+            self.status = .pasue(true)
+            self.controlView.status = .pasue(true)
+        }
         
     }
     
@@ -790,17 +799,6 @@ public class VideoNativePreview: NativePreview {
     @objc private func tapGestureRecognized(_ gesture: UITapGestureRecognizer) {
         self.changeBottomStatus()
     }
-
-    private var isTimerSuspend = true
-    private lazy var timer: DispatchSourceTimer = {
-        let timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-        timer.schedule(wallDeadline: DispatchWallTime.now(), repeating: .seconds(1))
-        timer.setEventHandler(handler: { [weak weakSelf = self] in
-            weakSelf?.updateTime()
-        })
-        return timer
-    }()
-    
     
     private var autoHiddenBottomCount: Int = 0
     
@@ -836,6 +834,8 @@ public class VideoNativePreview: NativePreview {
     }
     
     private var recordDuration = 0
+    private var isTimerSuspend = true
+    private var timer: DispatchSourceTimer?
     
     private func updateTime() {
         self.controlView.refreshControl(self.player)
@@ -853,16 +853,26 @@ public class VideoNativePreview: NativePreview {
     }
     
     private func resume() {
+        if self.timer == nil {
+            self.timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+            self.timer?.schedule(wallDeadline: DispatchWallTime.now(), repeating: .seconds(1))
+            self.timer?.setEventHandler(handler: { [weak weakSelf = self] in
+                weakSelf?.updateTime()
+            })
+        }
         if self.isTimerSuspend {
             self.isTimerSuspend = false
-            self.timer.resume()
+            self.timer?.resume()
         }
     }
 
     private func suspend() {
+        if self.timer == nil {
+            return
+        }
         if !self.isTimerSuspend {
             self.isTimerSuspend = true
-            self.timer.suspend()
+            self.timer?.suspend()
             self.controlView.refreshControl(self.player)
         }
     }
@@ -1012,8 +1022,12 @@ public class VideoNativePreview: NativePreview {
         }
         if !(self.player?.isPreparedToPlay ?? false) {
             self.setupPlayer()
-            self.status = .playing(true)
-            self.player?.prepareToPlay()
+            if self.player != nil {
+                self.status = .playing(true)
+                self.player?.prepareToPlay()
+            } else {
+                self.status = .pasue(true)
+            }
             return
         }
         if self.player?.playbackState == .stopped {
