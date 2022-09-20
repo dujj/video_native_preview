@@ -56,6 +56,9 @@ class AudioNativePreview : NativePreview {
     fileprivate lazy var backgroundImageView: UIImageView = {
         UIImageView(image: UIImage(named: "ic_audio_show_cover"))
     }()
+    
+    private lazy var loadingView = PKLogoLoadingView()
+    
     fileprivate lazy var videoView: UIView = UIView()
     
     fileprivate lazy var controlView: PKMediaControlView = PKMediaControlView()
@@ -86,6 +89,10 @@ class AudioNativePreview : NativePreview {
         self.manager.delegate = self
         
         self.initBackgroundImageView()
+        
+        self.loadingView.isHidden = true
+        self.addSubview(self.loadingView)
+        
         self.initializeControlView()
         
         self.initFailedView()
@@ -119,6 +126,8 @@ class AudioNativePreview : NativePreview {
         
         self.audioMaskView.frame = self.bounds
         self.backgroundImageView.frame = CGRect(x: width*0.5-60, y: (height-60)*0.33, width: 120, height: 120)
+        
+        self.loadingView.frame = self.bounds
         
         self.controlView.frame = CGRect(x: 0, y: height-150-bottomMargin, width: width, height: 150)
         
@@ -236,12 +245,12 @@ class AudioNativePreview : NativePreview {
     
     fileprivate func showLoadingView() {
         if self.centerPlayBackgroundView.isHidden {
-            
+            self.loadingView.startAnimating()
         }
     }
     
     fileprivate func hideLoadingView() {
-        
+        self.loadingView.stopAnimating()
     }
     
     fileprivate func showRetryView() {

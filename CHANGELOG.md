@@ -34,3 +34,7 @@
 ## 0.0.8
 
 * ios fix
+
+## 0.0.9
+
+* ios audio loading
