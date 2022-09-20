@@ -422,8 +422,10 @@ class PKLiveVideoControlView: UIView {
         case seek(Double)
     }
     
+    private var isVideo: Bool
     private var handlerEvent: ((Event) -> Void)
-    init(_ handlerEvent: @escaping (Event) -> Void) {
+    init(_ handlerEvent: @escaping (Event) -> Void, isVideo: Bool) {
+        self.isVideo =  isVideo
         self.handlerEvent = handlerEvent
         super.init(frame: CGRect.zero)
         self.commonInit()
@@ -451,11 +453,13 @@ class PKLiveVideoControlView: UIView {
         self.loadingView.isHidden = true
         self.addSubview(self.loadingView)
         
-        self.pauseView.isHidden = true
-        self.pauseView.centerPlayButton.qmui_tapBlock = { [weak weakSelf = self] (_) in
-            weakSelf?.handlerEvent(.play)
+        if self.isVideo {
+            self.pauseView.isHidden = true
+            self.pauseView.centerPlayButton.qmui_tapBlock = { [weak weakSelf = self] (_) in
+                weakSelf?.handlerEvent(.play)
+            }
+            self.addSubview(self.pauseView)
         }
-        self.addSubview(self.pauseView)
         
         self.retryView.isHidden = true
         self.retryView.retryButton.qmui_tapBlock = { [weak weakSelf = self] (_) in
@@ -511,7 +515,7 @@ class PKLiveVideoControlView: UIView {
             weakSelf?.handlerEvent(.portrait)
         }
         
-        self.controlView.showOriginButton = true
+        self.controlView.showOriginButton = self.isVideo
         self.controlView.isUserInteractionEnabled = false
         self.headerTimeLabel.text = "00:00"
         self.controlView.updateTime(current: "00:00", total: "00:00")
@@ -536,7 +540,11 @@ class PKLiveVideoControlView: UIView {
         
         let bottomMargin = QMUIHelper.safeAreaInsetsForDeviceWithNotch.bottom
         
-        self.controlView.frame = CGRect(x: 0, y: height-64-bottomMargin, width: width, height: 64)
+        if self.isVideo {
+            self.controlView.frame = CGRect(x: 0, y: height-64-bottomMargin, width: width, height: 64)
+        } else {
+            self.controlView.frame = CGRect(x: 0, y: height-150-bottomMargin, width: width, height: 150)
+        }
     }
     
     @objc private func statusBarOrientationDidChanged(_ notification: Notification) {
@@ -658,13 +666,19 @@ public class VideoNativePreview: NativePreview {
     var initialUrl: String
     var failedText: String = "failed"
     var retryText: String = "retry"
+    var isVideo: Bool
     
     private var player: IJKMediaPlayback?
     
     private lazy var controlView: PKLiveVideoControlView = {
-        PKLiveVideoControlView { [weak weakSelf = self] (event) in
+        PKLiveVideoControlView({ [weak weakSelf = self] (event) in
             weakSelf?.handlerEvent(event)
-        }
+        }, isVideo: self.isVideo)
+    }()
+    
+    private lazy var audioMaskView: UIView = UIView()
+    private lazy var backgroundImageView: UIImageView = {
+        UIImageView(image: UIImage(named: "ic_audio_show_cover"))
     }()
     
     deinit {
@@ -681,7 +695,8 @@ public class VideoNativePreview: NativePreview {
     }
     
     
-    public init(frame: CGRect, url: String, failedText: String, retryText: String) {
+    public init(frame: CGRect, url: String, failedText: String, retryText: String, isVideo: Bool = true) {
+        self.isVideo = isVideo
         self.initialUrl = url
         self.failedText = failedText
         self.retryText = retryText
@@ -696,13 +711,17 @@ public class VideoNativePreview: NativePreview {
         IJKFFMoviePlayerController.setLogLevel(IJKLogLevel(4))
         #endif
 
+        self.audioMaskView.addSubview(self.backgroundImageView)
+        
         self.setupPlayer()
         
         self.controlView.retryView.retryLabel.text = self.failedText // failed_to_load
         self.controlView.retryView.retryButton.setTitle(self.retryText, for: .normal) //"desktop_retry"
         self.addSubview(self.controlView)
         
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognized(_:))))
+        if self.isVideo {
+            self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tapGestureRecognized(_:))))
+        }
         
         self.addObervers()
 
@@ -732,15 +751,26 @@ public class VideoNativePreview: NativePreview {
             self.player?.scalingMode = .aspectFit
             self.player?.shouldAutoplay = true
             self.player?.setPauseInBackground(false)
-            if let playerView = self.player?.view {
-                self.insertSubview(playerView, at: 0)
+            if self.isVideo {
+                if let playerView = self.player?.view {
+                    self.insertSubview(playerView, at: 0)
+                }
+            } else {
+                self.insertSubview(self.audioMaskView, at: 0)
             }
         }
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        self.player?.view.frame = self.bounds
+        if self.isVideo {
+            self.player?.view.frame = self.bounds
+        } else {
+            self.audioMaskView.frame = self.bounds
+            let width =  self.bounds.width
+            let height = self.bounds.height
+            self.backgroundImageView.frame = CGRect(x: width*0.5-60, y: (height-60)*0.33, width: 120, height: 120)
+        }
 
         self.controlView.frame = self.bounds
     }
@@ -854,7 +884,9 @@ public class VideoNativePreview: NativePreview {
         
         if self.autoHiddenBottomCount > 6 {
             self.autoHiddenBottomCount = 0
-            self.hiddenBottomIfNeed()
+            if self.isVideo {
+                self.hiddenBottomIfNeed()
+            }
         }
     }
     

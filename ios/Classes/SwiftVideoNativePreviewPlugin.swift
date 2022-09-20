@@ -66,11 +66,7 @@ public class VideoNativePreviewController: NSObject, FlutterPlatformView, VideoN
             retryText = dic["retryText"] as? String ?? "retryText"
             type = dic["type"] as? String ?? "video"
         }
-        if type == "video" {
-            self.preview = VideoNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
-        } else {
-            self.preview = AudioNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText)
-        }
+        self.preview = VideoNativePreview(frame: frame, url: url, failedText: failedText, retryText: retryText, isVideo: type == "video")
         
         super.init()
         
