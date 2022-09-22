@@ -301,7 +301,7 @@ class MediaPlayerController(
     }
 
     companion object {
-        private const val TAG = "MediaController"
+        private const val TAG = "MediaPlayerController"
         private const val HIDE_TOP_BAR = 1
         private const val HIDE_FOOT_BAR = 2
         private const val BAR_DELAY_HIDE = 5 * 1000

@@ -322,8 +322,12 @@ class PlayerView @JvmOverloads constructor(
 
     fun onDestroy() {
         mHandler?.removeCallbacksAndMessages(null)
+        mHandler = null
         mMediaController?.release()
+        mMediaController = null
         mVideoView?.release(true)
+        mVideoView?.setRender(0)
+        mVideoView = null
         mViewOption = null
     }
 

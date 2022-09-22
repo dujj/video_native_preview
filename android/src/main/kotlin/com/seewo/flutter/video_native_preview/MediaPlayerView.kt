@@ -47,7 +47,9 @@ class MediaPlayerView : PlatformView, MethodChannel.MethodCallHandler, IViewOpti
     override fun dispose() {
         Log.d(TAG, "dispose")
         mMethodChannel?.setMethodCallHandler(null)
+        mMethodChannel = null
         mPlayerView?.onDestroy()
+        mPlayerView = null
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
