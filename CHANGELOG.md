@@ -46,3 +46,7 @@
 ## 0.1.1
 
 * ios video and audio fix
+
+## 0.1.2
+
+* android fix
