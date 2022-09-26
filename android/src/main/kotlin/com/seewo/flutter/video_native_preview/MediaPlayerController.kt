@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -15,6 +14,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import com.tencent.mars.xlog.Log
 import java.util.*
 
 class MediaPlayerController(

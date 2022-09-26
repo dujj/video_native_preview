@@ -14,6 +14,4 @@
     <dimen name="video_top_bar_current_position">54dp</dimen>
     <dimen name="video_seek_bar_padding_top">3dp</dimen>
     <dimen name="video_seek_bar_height">2dp</dimen>
-
-    <dimen name="divider_height">0.5dp</dimen>
 </resources>

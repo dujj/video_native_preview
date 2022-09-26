@@ -1,8 +1,8 @@
 package com.seewo.flutter.video_native_preview
 
 import android.content.Context
-import android.util.Log
 import android.view.View
+import com.tencent.mars.xlog.Log
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView

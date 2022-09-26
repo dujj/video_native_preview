@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.pinco.player.media.IjkVideoView
+import com.tencent.mars.xlog.Log
 import tv.danmaku.ijk.media.player.IMediaPlayer
 import java.lang.ref.WeakReference
 import java.util.*

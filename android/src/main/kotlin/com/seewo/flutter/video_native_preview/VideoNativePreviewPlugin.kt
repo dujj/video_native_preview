@@ -1,6 +1,7 @@
 package com.seewo.flutter.video_native_preview
 
 import androidx.annotation.NonNull
+import com.tencent.mars.xlog.Log
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
 /** VideoNativePreviewPlugin */
@@ -11,6 +12,7 @@ class VideoNativePreviewPlugin : FlutterPlugin {
     /// when the Flutter Engine is detached from the Activity
 
     override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("VideoPreviewPlugin", "onAttachedToEngine")
         binding
             .platformViewRegistry
             .registerViewFactory(
@@ -20,5 +22,6 @@ class VideoNativePreviewPlugin : FlutterPlugin {
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("VideoPreviewPlugin", "onDetachedFromEngine")
     }
 }

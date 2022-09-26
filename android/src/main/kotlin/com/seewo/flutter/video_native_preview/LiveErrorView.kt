@@ -3,6 +3,7 @@ package com.seewo.flutter.video_native_preview
 import android.content.Context
 import android.util.TypedValue
 import android.view.Gravity
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -31,26 +32,33 @@ class LiveErrorView(context: Context, var retryText: String, var failedText: Str
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         orientation = VERTICAL
         gravity = Gravity.CENTER
+        addErrorImageView(context)
         addTipsView(context)
         addRetryView(context)
+    }
+
+    private fun addErrorImageView(context: Context){
+        val imageView = ImageView(context)
+        imageView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
+        imageView.setImageResource(R.drawable.ic_error_black)
+        addView(imageView)
     }
 
     private fun addRetryView(context: Context) {
         var textView = TextView(context)
         textView.text = retryText
-        textView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        layoutParams.topMargin = dipToPixel(context, 16)
+        textView.layoutParams = layoutParams
+        textView.gravity = Gravity.CENTER
+        textView.minWidth = dipToPixel(context, 160)
+        textView.minHeight = dipToPixel(context, 52)
         textView.setTextSize(
             TypedValue.COMPLEX_UNIT_PX,
-            context.resources.getDimensionPixelSize(R.dimen.size_12).toFloat()
+            context.resources.getDimensionPixelSize(R.dimen.size_16).toFloat()
         )
-        textView.setTextColor(ContextCompat.getColor(context, R.color.color_FFA200))
+        textView.setTextColor(ContextCompat.getColor(context, R.color.white))
         textView.background = ContextCompat.getDrawable(context, R.drawable.bg_retry_shape)
-        textView.setPadding(
-            dipToPixel(context, 24),
-            dipToPixel(context, 4),
-            dipToPixel(context, 24),
-            dipToPixel(context, 4)
-        )
         textView.setOnClickListener { listener?.onLiveRetry() }
         addView(textView)
     }
@@ -58,18 +66,14 @@ class LiveErrorView(context: Context, var retryText: String, var failedText: Str
     private fun addTipsView(context: Context) {
         var textView = TextView(context)
         textView.text = failedText
-        textView.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        textView.setPadding(
-            dipToPixel(context, 0),
-            dipToPixel(context, 0),
-            dipToPixel(context, 0),
-            dipToPixel(context, 12)
-        )
+        val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        layoutParams.topMargin = dipToPixel(context, 24)
+        textView.layoutParams = layoutParams
         textView.setTextSize(
             TypedValue.COMPLEX_UNIT_PX,
-            context.resources.getDimensionPixelSize(R.dimen.size_14).toFloat()
+            context.resources.getDimensionPixelSize(R.dimen.size_16).toFloat()
         )
-        textView.setTextColor(ContextCompat.getColor(context, R.color.white_alpha_60))
+        textView.setTextColor(ContextCompat.getColor(context, R.color.white_alpha_80))
         addView(textView)
     }
 

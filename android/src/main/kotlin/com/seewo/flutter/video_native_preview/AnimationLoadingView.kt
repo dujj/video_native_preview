@@ -4,12 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.AnimationDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
+import com.tencent.mars.xlog.Log
 
 class AnimationLoadingView : AppCompatImageView {
     private var isShowing = false
@@ -50,7 +50,7 @@ class AnimationLoadingView : AppCompatImageView {
         isShowing = false
     }
 
-    fun isShowing():Boolean{
+    fun isShowing(): Boolean {
         return isShowing
     }
 
