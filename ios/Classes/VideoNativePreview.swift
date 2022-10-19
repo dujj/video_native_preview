@@ -640,7 +640,7 @@ class PKLiveVideoControlView: UIView {
         }
         let intPosition = Int(position + 0.5)
         if intDuration > 0 {
-            self.controlView.progressSlider.value = Float(position)
+            self.controlView.progressSlider.value = Float(intPosition)
         } else {
             self.controlView.progressSlider.value = 0.0
         }
@@ -753,6 +753,7 @@ public class VideoNativePreview: NativePreview {
             self.player?.setPauseInBackground(false)
             if self.isVideo {
                 if let playerView = self.player?.view {
+                    playerView.backgroundColor = UIColor.clear
                     self.insertSubview(playerView, at: 0)
                 }
             } else {
