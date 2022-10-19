@@ -147,7 +147,7 @@ class PKMediaControlView: UIView {
         self.landscapeButton.addTarget(self, action: #selector(self.landscapeButtonDidTapped(_:)), for: .touchUpInside)
         
         self.addSubview(self.portraitButton)
-        self.portraitButton.setImage(UIImage(named: "ic_vido_spin_normal"), for: .normal)
+        self.portraitButton.setImage(UIImage(named: "ic_vido_spin_landscape"), for: .normal)
         self.portraitButton.addTarget(self, action: #selector(self.portraitButtonDidTapped(_:)), for: .touchUpInside)
         self.portraitButton.isHidden = true
         

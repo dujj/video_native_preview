@@ -50,3 +50,7 @@
 ## 0.1.2
 
 * android fix
+
+## 0.1.3
+
+* ios fix
