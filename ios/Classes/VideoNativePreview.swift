@@ -613,7 +613,7 @@ class PKLiveVideoControlView: UIView {
         
         var totalText = "00:00"
         if intDuration > 0 {
-            self.controlView.progressSlider.maximumValue = Float(duration)
+            self.controlView.progressSlider.maximumValue = Float(intDuration)
             totalText = String(format: "%02d:%02d", intDuration / 60, intDuration % 60)
         } else {
             self.controlView.progressSlider.maximumValue = 1.0
