@@ -37,9 +37,9 @@ class _MyAppState extends State<MyApp> {
           constraints: const BoxConstraints.expand(),
           color: Colors.black12,
           child: VideoNativePreview(
-            // type: 'audio',
+            type: 'video',
             initialUrl:
-                'https://user-images.githubusercontent.com/9443889/188844287-12bb7c20-0559-4247-8205-aaad31058a4a.mp4',
+                'https://pinco.test.seewo.com/server-main/api/resource/830133860493594624/url?',
             onChangeAppBar: (status) {
               debugPrint('onChangeAppBar : $status');
               if (status == 'true') {

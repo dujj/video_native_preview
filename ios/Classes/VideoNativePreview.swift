@@ -754,6 +754,19 @@ public class VideoNativePreview: NativePreview {
             if self.isVideo {
                 if let playerView = self.player?.view {
                     playerView.backgroundColor = UIColor.clear
+                    let asset: AVAsset? = AVAsset(url: url)
+                    if let videoTrack = asset?.tracks(withMediaType: .video).first {
+                        let t = videoTrack.preferredTransform
+                        if t.a == 0 && t.b == 1 && t.c == -1 && t.d == 0 {
+                            playerView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
+                        } else if t.a == 0 && t.b == -1 && t.c == 1 && t.d == 0 {
+                            playerView.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi/2))
+                        } else if t.a == 1 && t.b == 0 && t.c == 0 && t.d == 1 {
+                            playerView.transform = CGAffineTransform.identity
+                        } else if t.a == -1 && t.b == 0 && t.c == 0 && t.d == -1 {
+                            playerView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                        }
+                    }
                     self.insertSubview(playerView, at: 0)
                 }
             } else {
@@ -912,8 +925,8 @@ public class VideoNativePreview: NativePreview {
         if !self.isTimerSuspend {
             self.isTimerSuspend = true
             self.timer?.suspend()
-            self.controlView.refreshControl(self.player)
         }
+        self.controlView.refreshControl(self.player)
     }
     
     private func addObervers() {
