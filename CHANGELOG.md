@@ -62,3 +62,7 @@
 ## 0.1.5
 
 * ios fix
+
+## 0.1.6
+
+* ios fix video rote
